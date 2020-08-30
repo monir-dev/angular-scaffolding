@@ -1,0 +1,11 @@
+vscode
+    - PHP IntelliSense
+    - Angular Files
+    - Angular 10 sinppets
+    - Bracket Pair Colorizer 2
+    - github pull requests and issues
+    - 
+
+
+
+

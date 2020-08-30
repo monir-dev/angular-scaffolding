@@ -1,0 +1,18 @@
+Angular:
+    cmd:
+        - npm install -g @angular/cli
+        - ng new Client
+
+
+    issues:
+        - File C:\Users\MonirHossain\AppData\Roaming\npm\ng.ps1 cannot be loaded because running scripts is disabled on this system. For more information, see about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.
+            -(solve) Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+
+    versions:
+        - Angular CLI: 10.0.8
+        - Node: 12.18.3
+
+
+Laravel:
+H:\Developoment\Angular\angular-scaffolding
