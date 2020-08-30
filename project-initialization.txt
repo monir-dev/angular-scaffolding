@@ -14,5 +14,9 @@ Angular:
         - Node: 12.18.3
 
 
+    Run:
+        -ng serve --open
+
+
 Laravel:
 H:\Developoment\Angular\angular-scaffolding
