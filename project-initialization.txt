@@ -15,8 +15,14 @@ Angular:
 
 
     Run:
-        -ng serve --open
+        - ng serve --open
+        - ng serve --watch
 
 
 Laravel:
-H:\Developoment\Angular\angular-scaffolding
+
+
+
+
+Resource links:
+https://angular-2-training-book.rangle.io/modules/multiple-elements
