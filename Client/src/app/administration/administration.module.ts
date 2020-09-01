@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
-
 
 import { AdministrationComponent } from './administration.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
@@ -14,9 +11,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { AdministrationRoutingModule } from './administration-routing.module';
 
-// @RouteConfig([
-//   {path: '/dashboard', name: 'Dashboard', component: DashboardComponent, useAsDefault: true},
-// ])
 
 @NgModule({
   imports: [
