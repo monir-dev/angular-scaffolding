@@ -4,8 +4,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdministrationComponent } from './administration.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
-
-
+import { UserComponent } from './user/user.component';
 
 
 const routes: Routes = [
@@ -13,7 +12,8 @@ const routes: Routes = [
     ,
     children: [
       { path: '', redirectTo: '/admin/dashboard', pathMatch: 'full' },
-      { path: 'admin/dashboard', component: DashboardComponent }
+      { path: 'admin/dashboard', component: DashboardComponent },
+      { path: 'admin/users', component: UserComponent },
     ]
   },
   { path: 'login', component: LoginComponent },

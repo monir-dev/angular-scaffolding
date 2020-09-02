@@ -26,3 +26,6 @@ Laravel:
 
 Resource links:
 https://angular-2-training-book.rangle.io/modules/multiple-elements
+http://l-lin.github.io/angular-datatables/#/welcome
+
+"scripts": ["node_modules/jquery/dist/jquery.min.js"]

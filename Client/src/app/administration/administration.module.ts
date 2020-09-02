@@ -8,6 +8,9 @@ import { RightSideBarComponent } from './components/right-side-bar/right-side-ba
 import { FooterComponent } from './components/footer/footer.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginComponent } from './login/login.component';
+import { RegistrationComponent } from './registration/registration.component';
+import { UserComponent } from './user/user.component';
 
 import { AdministrationRoutingModule } from './administration-routing.module';
 
@@ -24,7 +27,10 @@ import { AdministrationRoutingModule } from './administration-routing.module';
     RightSideBarComponent,
     FooterComponent,
     BreadcrumbComponent,
-    DashboardComponent
+    DashboardComponent,
+    LoginComponent,
+    RegistrationComponent,
+    UserComponent
   ]
 })
 export class AdministrationModule { }
