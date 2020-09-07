@@ -1,7 +1,8 @@
-import { Component, OnInit, NgModule } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 declare var $:any;
 
 import { employees } from "./employees";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -13,18 +14,22 @@ export class UserComponent implements OnInit {
 
   public users: Array<any> = employees;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
-
     // $(document).ready(function(){
-      
+    //      $('#dataTable').dataTable();
     // });    
-    $('#datatable').dataTable();
+  }
+  ngAfterViewInit(): void {
+    $('#dataTable').dataTable();
   }
 
+  loadCreateUserPage() {
+    this.router.navigate(['/admin/users/create']);
+  }
 
   ngOnDestroy(): void {
-    $("#datatable").destroy();
+    // $("#datatable").destroy();
   }
 }

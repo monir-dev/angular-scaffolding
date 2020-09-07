@@ -11,6 +11,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { UserComponent } from './user/user.component';
+import { CreateUserComponent } from './user/create-user/create-user.component';
+import { EditUserComponent } from './user/edit-user/edit-user.component';
 
 import { AdministrationRoutingModule } from './administration-routing.module';
 
@@ -30,7 +32,9 @@ import { AdministrationRoutingModule } from './administration-routing.module';
     DashboardComponent,
     LoginComponent,
     RegistrationComponent,
-    UserComponent
+    UserComponent,
+    CreateUserComponent,
+    EditUserComponent
   ]
 })
 export class AdministrationModule { }

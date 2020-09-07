@@ -5,6 +5,8 @@ import { AdministrationComponent } from './administration.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { UserComponent } from './user/user.component';
+import { CreateUserComponent } from './user/create-user/create-user.component';
+import { EditUserComponent } from './user/edit-user/edit-user.component';
 
 
 const routes: Routes = [
@@ -13,7 +15,11 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: '/admin/dashboard', pathMatch: 'full' },
       { path: 'admin/dashboard', component: DashboardComponent },
-      { path: 'admin/users', component: UserComponent },
+
+      { path: 'admin/users/create', component: CreateUserComponent, pathMatch: 'full' },
+      { path: 'admin/users/:id/edit', component: EditUserComponent, pathMatch: 'full' },
+      { path: 'admin/users', component: UserComponent, pathMatch: 'full' },
+      
     ]
   },
   { path: 'login', component: LoginComponent },
