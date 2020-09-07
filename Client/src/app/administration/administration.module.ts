@@ -17,10 +17,14 @@ import { EditUserComponent } from './user/edit-user/edit-user.component';
 import { AdministrationRoutingModule } from './administration-routing.module';
 import { UserService } from '../common/service/user.service';
 
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+
 
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     AdministrationRoutingModule
   ],
   declarations: [

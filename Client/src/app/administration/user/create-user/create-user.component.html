@@ -10,128 +10,65 @@
         </h4>
         
         
-        <form class="form-horizontal group-border-dashed" action="#">
+        <form class="form-horizontal group-border-dashed" [formGroup]="userForm"  (ngSubmit)="onSubmit()">
           <div class="row">
             <div class="col-lg-6">
   
-              <div class="form-group">
-                <label class="col-sm-3 control-label">Required</label>
+              <div class="form-group" [ngClass]="{
+                'has-danger': userForm.controls.Name.invalid && userForm.controls.Name.dirty,
+                'has-success': userForm.controls.Name.valid && userForm.controls.Name.dirty
+              }">
+                <label class="col-sm-3 control-label">Name<span style="color:crimson"> *</span></label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" required placeholder="Type something" />
+                  <input type="text" formControlName="Name" id="Name" class="form-control is-invalid" placeholder="Name" required />
+
+                  <pre>Touched? {{ userForm.controls.Name.touched }}</pre>
+                  <pre>Valid? {{ userForm.controls.Name.valid }}</pre>
+                  
                 </div>
               </div>
                           
               <div class="form-group">
-                <label class="col-sm-3 control-label">Equal To</label>
-                <div class="col-sm-3">
-                  <input type="password" id="pass2" class="form-control" required placeholder="Password" />
-                </div>
-                <div class="col-sm-3">
-                  <input type="password" class="form-control" required data-parsley-equalto="#pass2" placeholder="Re-Type Password" />
+                <label class="col-sm-3 control-label">E-Mail<span style="color:crimson"> *</span></label>
+                <div class="col-sm-8">
+                  <input type="email" formControlName="EmailAddress" class="form-control" required parsley-type="email" placeholder="Enter a valid e-mail" />
                 </div>
               </div>
-              
+
               <div class="form-group">
-                <label class="col-sm-3 control-label">E-Mail</label>
+                <label class="col-sm-3 control-label">UserName<span style="color:crimson"> *</span></label>
                 <div class="col-sm-8">
-                  <input type="email" class="form-control" required parsley-type="email" placeholder="Enter a valid e-mail" />
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-3 control-label">URL</label>
-                <div class="col-sm-8">
-                  <input parsley-type="url" type="url" class="form-control" required placeholder="URL" />
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-3 control-label">Digits</label>
-                <div class="col-sm-8">
-                  <input data-parsley-type="digits" type="text" class="form-control" required placeholder="Enter only digits" />
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-3 control-label">Number</label>
-                <div class="col-sm-8">
-                  <input data-parsley-type="number" type="text" class="form-control" required placeholder="Enter only numbers" />
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-3 control-label">Alphanumeric</label>
-                <div class="col-sm-8">
-                  <input data-parsley-type="alphanum" type="text" class="form-control" required placeholder="Enter alphanumeric value" />
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-3 control-label">Textarea</label>
-                <div class="col-sm-8">
-                  <textarea required class="form-control"></textarea>
+                  <input type="text" formControlName="UserName"  class="form-control" required placeholder="UserName" />
                 </div>
               </div>
   
             </div>
             
-            <div class="col-lg-6">                           
+            <div class="col-lg-6">      
+
               <div class="form-group">
-                <label class="col-sm-3 control-label">Min Length</label>
+                <label class="col-sm-3 control-label">Phone No</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" required data-parsley-minlength="6" placeholder="Min 6 chars." />
+                  <input type="text" formControlName="PhoneNumber" class="form-control" placeholder="Phone Number" />
                 </div>
               </div>
+
               <div class="form-group">
-                <label class="col-sm-3 control-label">Max Length</label>
+                <label class="col-sm-3 control-label">Password<span style="color:crimson"> *</span></label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" required data-parsley-maxlength="6" placeholder="Max 6 chars." />
+                  <input type="password" formControlName="Password" class="form-control" required data-parsley-minlength="6" placeholder="Password" />
                 </div>
               </div>
+
               <div class="form-group">
-                <label class="col-sm-3 control-label">Range Length</label>
+                <label class="col-sm-3 control-label">Confirm Password<span style="color:crimson"> *</span></label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" required data-parsley-length="[5,10]" placeholder="Text between 5 - 10 chars length" />
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-3 control-label">Min Value</label>
-                <div class="col-sm-8">
-                  <input type="text" class="form-control" required data-parsley-min="6" placeholder="Min value is 6" />
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-3 control-label">Max Value</label>
-                <div class="col-sm-8">
-                  <input type="text" class="form-control" required data-parsley-max="6" placeholder="Max value is 6" />
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-3 control-label">Range Value</label>
-                <div class="col-sm-8">
-                  <input class="form-control" required type="text range" min="6" max="100" placeholder="Number between 6 - 100" />
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-3 control-label">Regular Exp</label>
-                <div class="col-sm-8">
-                  <input type="text" class="form-control" required data-parsley-pattern="#[A-Fa-f0-9]{6}" placeholder="Hex. Color" />
+                  <input type="password" formControlName="ConfirmPassword" class="form-control" required data-parsley-minlength="6" placeholder="Confirm Password" />
                 </div>
               </div>
               
-              <div class="form-group">
-                <label class="col-sm-3 control-label">Min check</label>
-                <div class="col-sm-8">
-                  <div class="checkbox checkbox-pink">
-                    <input id="checkbox1" type="checkbox" data-parsley-multiple="groups" data-parsley-mincheck="2">
-                    <label for="checkbox1"> And this </label>
-                  </div>
-                  <div class="checkbox checkbox-pink">
-                    <input id="checkbox2" type="checkbox" data-parsley-multiple="groups" data-parsley-mincheck="2">
-                    <label for="checkbox2"> Can't check this </label>
-                  </div>
-                  <div class="checkbox checkbox-pink">
-                    <input id="checkbox3" type="checkbox" data-parsley-multiple="groups" data-parsley-mincheck="2" required>
-                    <label for="checkbox3"> This too </label>
-                  </div>
-                </div>
-              </div>
             </div>
+
           </div>
   
           <div class="row">
