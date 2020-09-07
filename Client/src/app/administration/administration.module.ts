@@ -15,6 +15,7 @@ import { CreateUserComponent } from './user/create-user/create-user.component';
 import { EditUserComponent } from './user/edit-user/edit-user.component';
 
 import { AdministrationRoutingModule } from './administration-routing.module';
+import { UserService } from '../common/service/user.service';
 
 
 @NgModule({
@@ -35,6 +36,9 @@ import { AdministrationRoutingModule } from './administration-routing.module';
     UserComponent,
     CreateUserComponent,
     EditUserComponent
+  ],
+  providers: [
+    UserService
   ]
 })
 export class AdministrationModule { }

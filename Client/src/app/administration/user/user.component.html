@@ -17,37 +17,21 @@
                     <tr>
                         <th hidden>Id</th>
                         <th>Name</th>
-                        <th>Job Title</th>
-                        <th>Country</th>
-                        <th>Is Online</th>
-                        <th>Rating</th>
-                        <th>Budget</th>
-                        <th>Phone</th>
-                        <th>Address</th>
-                        <th>img_id</th>
-                        <th>Gender</th>
+                        <th>User Name</th>
+                        <th>Email Address</th>
+                        <th>Phone Number</th>
                         <th>Actions</th>
                     </tr>
                   </thead>
 
-
                   <tbody>
                     <tr *ngFor="let user of users; let i=index">
-                        <td hidden>{{ user.id }}</td>
-                        <td>{{ user.full_name }}</td>
-                        <td>{{ user.job_title }}</td>
-                        <td>{{ user.country }}</td>
-                        <td>{{ user.is_online }}</td>
-                        <td>{{ user.rating }}</td>
-                        <td>{{ user.budget }}</td>
-                        <td>{{ user.phone }}</td>
-                        <td>{{ user.address }}</td>
-                        <td>{{ user.img_id }}</td>
-                        <td>{{ user.gender }}</td>
+                        <td hidden>{{ user.Id }}</td>
+                        <td>{{ user.Name }}</td>
+                        <td>{{ user.UserName }}</td>
+                        <td>{{ user.EmailAddress }}</td>
+                        <td>{{ user.PhoneNumber }}</td>
                         <td>
-                            <!-- <a href="javascript:void(0);" [routerLink]="['/admin/users', user.id, 'edit']" class="btn btn-warning btn-custom waves-effect waves-light"><i class="ti-pencil"></i></a>
-                            <a href="javascript:void(0);" [routerLink]="['/admin/users', user.id, 'edit']" class="btn btn-danger btn-custom waves-effect waves-light m-l-5"><i class="ti-trash"></i></a>
-                             -->
                             <a href="javascript:void(0);" [routerLink]="['/admin/users', user.id, 'edit']" class="table-action-btn" style="color:#ffbd4a;font-size: medium;"><i class="ti-pencil"></i></a>
                             <a href="javascript:void(0);" [routerLink]="['/admin/users', user.id, 'edit']" class="table-action-btn m-l-5" style="color:#f05050;font-size: medium;"><i class="ti-trash"></i></a>
                         </td>
