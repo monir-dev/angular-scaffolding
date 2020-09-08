@@ -1,0 +1,3 @@
+﻿
+enable cors
+https://dzone.com/articles/access-control-allow-origin-header-and-the-aspnet
