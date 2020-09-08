@@ -15,7 +15,7 @@
             <div class="col-lg-6">
   
               <div class="form-group" [ngClass]="{
-                'has-danger': userForm.controls.Name.invalid && userForm.controls.Name.dirty,
+                'has-error': userForm.controls.Name.invalid && userForm.controls.Name.dirty,
                 'has-success': userForm.controls.Name.valid && userForm.controls.Name.dirty
               }">
                 <label class="col-sm-3 control-label">Name<span style="color:crimson"> *</span></label>

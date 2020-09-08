@@ -7,38 +7,80 @@
 				</div>
 
 				<div class="panel-body">
-					<form class="form-horizontal m-t-20" action="http://coderthemes.com/ubold_2.1/dark_full/index.html">
 
-						<div class="form-group ">
+					<div>
+						<li *ngFor="let error of backendModelStateErrors" style="color:brown">{{ error }}</li>
+					</div>
+
+					<form class="form-horizontal m-t-20"  [formGroup]="registrationForm"  (ngSubmit)="onSubmit()">
+
+						<div class="form-group" [ngClass]="{
+							'has-error': f.email.invalid && f.email.dirty,
+							'has-success': f.email.valid && f.email.dirty
+						  }">
 							<div class="col-xs-12">
-								<input class="form-control" type="email" required="" placeholder="Email">
+								<input class="form-control" formControlName="email"  type="email" placeholder="Email" required/>
+								<span 
+									class="text-danger" 
+									*ngIf="f.email.dirty 
+										&& f.email.errors 
+										&& f.email.errors.required">Email is required </span>
+									<span 
+										class="text-danger" 
+										*ngIf="f.email.dirty 
+											&& f.email.errors 
+											&& f.email.errors.email">Please enter a valid email </span>
 							</div>
 						</div>
 
-						<div class="form-group ">
+						<div class="form-group" [ngClass]="{
+							'has-error': f.password.invalid && f.password.dirty,
+							'has-success': f.password.valid && f.password.dirty
+						  }">
 							<div class="col-xs-12">
-								<input class="form-control" type="text" required="" placeholder="Username">
+								<input class="form-control" type="password" formControlName="password" placeholder="Password" required/>
+								<span 
+									class="text-danger" 
+									*ngIf="f.password.dirty 
+											&& f.password.errors 
+											&& f.password.errors.required">Password is required </span>
+								<span 
+									class="text-danger" 
+									*ngIf="f.password.dirty 
+										&& f.password.errors 
+										&& f.password.errors.pattern">Password should be at least 6 characters long and should contain one number,one character and one special character.</span>
 							</div>
 						</div>
 
-						<div class="form-group">
+						<div class="form-group" [ngClass]="{
+							'has-error': f.confrim_password.invalid && f.confrim_password.dirty,
+							'has-success': f.confrim_password.valid && f.confrim_password.dirty
+						  }">
 							<div class="col-xs-12">
-								<input class="form-control" type="password" required="" placeholder="Password">
+								<input class="form-control" type="password" formControlName="confrim_password" placeholder="Confirm Password" compare-password="f.password" required/>
+								<span 
+									class="text-danger" 
+									*ngIf="f.confrim_password.dirty 
+										&& f.confrim_password.errors 
+										&& f.confirm_password.errors.required">Confirm password is required</span>  
+
+								<span 
+									class="text-danger" 
+									*ngIf="f.password.valid && f.confrim_password.dirty  && registrationForm.errors?.invalid">Password doesn't match</span> 
+
 							</div>
 						</div>
-
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<div class="col-xs-12">
 								<div class="checkbox checkbox-primary">
 									<input id="checkbox-signup" type="checkbox" checked="checked">
 									<label for="checkbox-signup">I accept <a href="#">Terms and Conditions</a></label>
 								</div>
 							</div>
-						</div>
-
+						</div> -->
 						<div class="form-group text-center m-t-40">
 							<div class="col-xs-12">
-								<button class="btn btn-pink btn-block text-uppercase waves-effect waves-light" type="submit">
+								<button class="btn btn-pink btn-block text-uppercase waves-effect waves-light" type="submit"  [disabled]="!registrationForm.valid">
 									Register
 								</button>
 							</div>

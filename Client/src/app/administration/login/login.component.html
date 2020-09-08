@@ -8,17 +8,44 @@
     </div>
 
     <div class="panel-body">
-      <form class="form-horizontal m-t-20" action="http://coderthemes.com/ubold_2.1/dark_full/index.html">
 
-        <div class="form-group ">
+      <div>
+        <li *ngFor="let error of backendModelStateErrors" style="color:brown">{{ error }}</li>
+      </div>
+
+
+      <form class="form-horizontal m-t-20"  [formGroup]="loginForm"  (ngSubmit)="onSubmit()">
+
+        <div class="form-group" [ngClass]="{
+          'has-error': f.email.invalid && f.email.dirty,
+          'has-success': f.email.valid && f.email.dirty
+          }">
           <div class="col-xs-12">
-            <input class="form-control" type="text" required="" placeholder="Username">
+            <input class="form-control" formControlName="email"  type="email" placeholder="Email" required/>
+								<span 
+									class="text-danger" 
+									*ngIf="f.email.dirty 
+										&& f.email.errors 
+										&& f.email.errors.required">Email is required </span>
+									<span 
+										class="text-danger" 
+										*ngIf="f.email.dirty 
+											&& f.email.errors 
+											&& f.email.errors.email">Please enter a valid email </span>
           </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{
+          'has-error': f.password.invalid && f.password.dirty,
+          'has-success': f.password.valid && f.password.dirty
+          }">
           <div class="col-xs-12">
-            <input class="form-control" type="password" required="" placeholder="Password">
+            <input class="form-control" type="password" formControlName="password" placeholder="Password" required/>
+            <span 
+              class="text-danger" 
+              *ngIf="f.password.dirty 
+                  && f.password.errors 
+                  && f.password.errors.required">Password is required </span>
           </div>
         </div>
 

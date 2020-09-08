@@ -7,9 +7,13 @@ export class User {
     Name: string;
     Password: string;
     PhoneNumber: string;
-
-    // deserialize(input: any) {
-    //     Object.assign(this, input);
-    //     return this;
-    //   }
   }
+
+  export class AuthUser {
+    id: number;
+    username: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    token: string;
+}
