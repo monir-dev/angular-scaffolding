@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { UserService } from '../../common/service/user.service';
-
+import { UserService } from '../services/user.service';
+import { first } from 'rxjs/operators';
 declare var $:any;
 
 import { employees } from "./employees";
 import { Router } from '@angular/router';
-import { User } from 'src/app/common/models/user.model';
+import {User} from "../../common/models/user.model";
 
 @Component({
   selector: 'app-user',
@@ -15,13 +15,21 @@ import { User } from 'src/app/common/models/user.model';
 
 export class UserComponent implements OnInit {
 
-  public users: Array<any> = [];
+  public users: Array<User> = [];
   public table: any;
 
   constructor(private router: Router, private userService: UserService) { }
 
   ngOnInit() {
-    this.users = this.userService.getUser();
+    this.userService.getUsers()
+    .pipe(first())
+    .subscribe(
+        data => {
+          this.users = data;
+        },
+        error => {
+          console.log(error);
+        });
   }
 
   ngAfterViewInit(): void {

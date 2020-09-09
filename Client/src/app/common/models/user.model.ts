@@ -1,12 +1,20 @@
 import {Deserializable} from "./deserializable.model";
 
 export class User {
+  
+  // constructor(
+  //   Id: number,
+  //   UserName: string,
+  //   Email: string,
+  //   PhoneNumber: string,
+  //   Password: string
+  // ) {  }
+
     Id: number;
     UserName: string;
-    EmailAddress: string;
-    Name: string;
-    Password: string;
+    Email: string;
     PhoneNumber: string;
+    Password: string;
   }
 
   export class AuthUser {

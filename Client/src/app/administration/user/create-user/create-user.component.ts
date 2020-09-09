@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { User } from 'src/app/common/models/user.model';
+import { UserService } from '../../services/user.service';
+import { first } from 'rxjs/internal/operators/first';
 
 @Component({
   selector: 'app-create-user',
@@ -10,33 +12,79 @@ import { User } from 'src/app/common/models/user.model';
 })
 export class CreateUserComponent implements OnInit {
 
-  public user: User = new User();
-
-  constructor(private route: ActivatedRoute,private router: Router) { }
+  constructor(private route: ActivatedRoute,private router: Router, private userService: UserService) { }
 
   userForm: FormGroup;
+  loading = false;
+  submitted = false;
+  returnUrl: string;
 
+  backendModelStateErrors: Array<any> = [];
+
+  // convenience getter for easy access to form fields
+  get f() { return this.userForm.controls; }
+
+  passwordConfirming(c: AbstractControl): { invalid: boolean } {    
+    if (c.get('Password').value !== c.get('ConfirmPassword').value) {
+        return {invalid: true};
+    }
+  }
+  
   ngOnInit() {
     this.userForm = new FormGroup({
-      UserName: new FormControl(this.user.UserName, [
+      Email: new FormControl('', [
         Validators.required,
-        Validators.minLength(4),
+        Validators.email
       ]),
-      EmailAddress: new FormControl(''),
-      Name: new FormControl('', [
+      Password: new FormControl('',[
         Validators.required,
-        Validators.minLength(4),
+        Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{5,}')
       ]),
-      Password: new FormControl(''),
-      ConfirmPassword: new FormControl(''),
-      PhoneNumber: new FormControl('')
-    });
+      ConfirmPassword: new FormControl('',[
+        Validators.required
+      ]),
+      PhoneNumber: new FormControl('', [
+        Validators.maxLength(11)
+      ])
+    }, this.passwordConfirming);
   }
 
   onSubmit(){
+    // stop here if form is invalid
+    if (this.userForm.invalid) {
+        return;
+    }
+
     var formData = this.userForm.value;
 
-    console.log(formData);
+    // reset backendModelStateErrors
+    this.backendModelStateErrors = [];
+
+    // reset alerts on submit
+    //this.alertService.clear();
+
+    var user = new User();
+    user.Email = formData.Email;
+    user.Password = formData.Password;
+    user.UserName = formData.Email;
+  
+    this.loading = true;
+    this.userService.createUser(user)
+    .pipe(first())
+    .subscribe(
+      data => {
+        //console.log(data);
+        
+        //this.alertService.success('Registration successful', true);
+        this.router.navigate(['/admin/users']);
+    },
+    error => {
+        //this.alertService.error(error);
+        this.loading = false;
+        this.backendModelStateErrors = error.error.ModelState[""];
+
+        console.log(error.status, error.error.ModelState[""]);
+    });
     
   }
 

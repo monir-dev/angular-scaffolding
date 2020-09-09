@@ -10,60 +10,84 @@
         </h4>
         
         
+        <div>
+          <li *ngFor="let error of backendModelStateErrors" style="color:brown">{{ error }}</li>
+        </div>
+
         <form class="form-horizontal group-border-dashed" [formGroup]="userForm"  (ngSubmit)="onSubmit()">
           <div class="row">
             <div class="col-lg-6">
-  
+                            
               <div class="form-group" [ngClass]="{
-                'has-error': userForm.controls.Name.invalid && userForm.controls.Name.dirty,
-                'has-success': userForm.controls.Name.valid && userForm.controls.Name.dirty
+                'has-error': f.Email.invalid && f.Email.dirty,
+                'has-success': f.Email.valid && f.Email.dirty
               }">
-                <label class="col-sm-3 control-label">Name<span style="color:crimson"> *</span></label>
-                <div class="col-sm-8">
-                  <input type="text" formControlName="Name" id="Name" class="form-control is-invalid" placeholder="Name" required />
-
-                  <pre>Touched? {{ userForm.controls.Name.touched }}</pre>
-                  <pre>Valid? {{ userForm.controls.Name.valid }}</pre>
-                  
-                </div>
-              </div>
-                          
-              <div class="form-group">
                 <label class="col-sm-3 control-label">E-Mail<span style="color:crimson"> *</span></label>
                 <div class="col-sm-8">
-                  <input type="email" formControlName="EmailAddress" class="form-control" required parsley-type="email" placeholder="Enter a valid e-mail" />
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-sm-3 control-label">UserName<span style="color:crimson"> *</span></label>
-                <div class="col-sm-8">
-                  <input type="text" formControlName="UserName"  class="form-control" required placeholder="UserName" />
+                  <input type="email" formControlName="Email" class="form-control" required placeholder="Enter a valid e-mail" />
+                  <span 
+                    class="text-danger" 
+                    *ngIf="f.Email.dirty 
+                        && f.Email.errors 
+                        && f.Email.errors.required">Email is required </span>
                 </div>
               </div>
   
+              <div class="form-group" [ngClass]="{
+                'has-error': f.Email.invalid && f.Email.dirty,
+                'has-success': f.Email.valid && f.Email.dirty
+              }">
+                <label class="col-sm-3 control-label">Phone No</label>
+                <div class="col-sm-8">
+                  <input type="text" formControlName="PhoneNumber" class="form-control" placeholder="Phone Number" />
+                  <span 
+                    class="text-danger" 
+                    *ngIf="f.Email.dirty 
+                        && f.Email.errors 
+                        && f.Email.errors.maxLength">Max length is 11 digit.</span>
+                </div>
+              </div>
+
             </div>
             
             <div class="col-lg-6">      
 
-              <div class="form-group">
-                <label class="col-sm-3 control-label">Phone No</label>
-                <div class="col-sm-8">
-                  <input type="text" formControlName="PhoneNumber" class="form-control" placeholder="Phone Number" />
-                </div>
-              </div>
-
-              <div class="form-group">
+              <div class="form-group" [ngClass]="{
+                'has-error': f.Password.invalid && f.Password.dirty,
+                'has-success': f.Password.valid && f.Password.dirty
+                }">
                 <label class="col-sm-3 control-label">Password<span style="color:crimson"> *</span></label>
                 <div class="col-sm-8">
-                  <input type="password" formControlName="Password" class="form-control" required data-parsley-minlength="6" placeholder="Password" />
+                  <input type="password" formControlName="Password" class="form-control" required placeholder="Password" />
+                  <span 
+                    class="text-danger" 
+                    *ngIf="f.Password.dirty 
+                        && f.Password.errors 
+                        && f.Password.errors.required">Password is required </span>
+                  <span 
+                    class="text-danger" 
+                    *ngIf="f.Password.dirty 
+                      && f.Password.errors 
+                      && f.Password.errors.pattern">Password should be at least 6 characters long and should contain one number,one character and one special character.</span>
                 </div>
               </div>
 
-              <div class="form-group">
+              <div class="form-group" [ngClass]="{
+                'has-error': f.ConfirmPassword.invalid && f.ConfirmPassword.dirty,
+                'has-success': f.ConfirmPassword.valid && f.ConfirmPassword.dirty
+                }">
                 <label class="col-sm-3 control-label">Confirm Password<span style="color:crimson"> *</span></label>
                 <div class="col-sm-8">
-                  <input type="password" formControlName="ConfirmPassword" class="form-control" required data-parsley-minlength="6" placeholder="Confirm Password" />
+                  <input type="password" formControlName="ConfirmPassword" class="form-control" required placeholder="Confirm Password" />
+                  <span 
+                    class="text-danger" 
+                    *ngIf="f.ConfirmPassword.dirty 
+                      && f.ConfirmPassword.errors 
+                      && f.ConfirmPassword.errors.required">Confirm password is required
+                  </span>  
+                  <span 
+                    class="text-danger" 
+                    *ngIf="f.Password.valid && f.ConfirmPassword.dirty  && userForm.errors?.invalid">Password doesn't match</span> 
                 </div>
               </div>
               
@@ -83,16 +107,13 @@
                   SUBMIT
                 </button>
                 <button type="reset"  class="btn btn-default m-l-5">
-                  CANCEL
+                  RESET
                 </button>
               </div>
             </div>
           </div>      
         </form>
-        
-
-
-
+                
       </div>
     </div>
   </div>
