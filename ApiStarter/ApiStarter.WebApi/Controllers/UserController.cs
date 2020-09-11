@@ -161,8 +161,22 @@ namespace ApiStarter.WebApi.Controllers
         }
 
         // DELETE api/user/5
-        public void Delete(int id)
+        public async Task Delete(string id)
         {
+            try 
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+                var user = await userManager.FindByIdAsync(id);
+                if (user == null) throw new Exception("User does not found.");
+
+                await userManager.DeleteAsync(user);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 }
