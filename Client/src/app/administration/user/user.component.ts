@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { first } from 'rxjs/operators';
 declare var $:any;
@@ -18,9 +18,7 @@ export class UserComponent implements OnInit {
   public users: Array<User> = [];
   public table: any;
 
-  constructor(private router: Router, private userService: UserService) { }
-
-  ngOnInit() {
+  constructor(private router: Router, private userService: UserService) { 
     this.userService.getUsers()
     .pipe(first())
     .subscribe(
@@ -32,8 +30,9 @@ export class UserComponent implements OnInit {
         });
   }
 
-  ngAfterViewInit(): void {
+  ngOnInit() {
     this.table = $("#dataTable").DataTable({
+        ordering:  false,
         dom: "Bfrtip",
         buttons: [{
             extend: "copy",
@@ -52,11 +51,61 @@ export class UserComponent implements OnInit {
             className: "btn-sm"
         }],
         responsive: !0
-    });
+        });
   }
+
+  
+
+  ngAfterViewInit(): void {
+
+    var searchField = document.getElementById("dataTable_filter").children[0].children[0];
+    searchField.addEventListener('keypress', logKey);
+
+    function logKey(e) {
+      console.log(e);      
+    }
+    
+
+    //https://l-lin.github.io/angular-datatables/#/extensions/responsive
+    
+    $('#dataTable_filter input').on('keypress', function(e) {
+        e.preventDefault();
+        var value = "";
+        if(e.key != "Enter"){
+          value = e.target.value + e.key;
+          e.target.value = value; 
+        }
+        
+        //filterUsers(value);
+        
+    });
+
+  }
+
+  filterUsers(value) {
+    console.log(this.users);
+    // this.users = this.users.filter((user: User) => user.Email.includes(value) || user.PhoneNumber.includes(value));
+  }
+
 
   loadCreateUserPage() {
     this.router.navigate(['/admin/users/create']);
+  }
+
+
+  onDeleteUser(id) {
+    this.userService.deleteUser(id).pipe(first())
+    .subscribe(
+      data => {
+        // remove that user for user list
+        this.users = this.users.filter((user: User) => user.Id != id);
+    },
+    error => {
+        //this.alertService.error(error);
+        console.log(error.status, error);
+    });
+
+    
   }
 
 }

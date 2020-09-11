@@ -69,4 +69,19 @@ export class UserService {
 
     return this.http.put<User>(`https://localhost:44355/api/user/${user.Id}`, user, httpOptions);
   }
+
+
+  deleteUser(id: string) {
+    const currentUser = this.authService.currentUserValue;
+    const access_token = currentUser['access_token'];
+    
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        Authorization: `Bearer ${access_token}`
+      })
+    };
+
+    return this.http.delete<any>(`https://localhost:44355/api/user/${id}`, httpOptions);
+  }
 }
