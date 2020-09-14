@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+
+import { DataTablesModule } from 'angular-datatables';
+
 import { AdministrationComponent } from './administration.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { LeftSideMenuComponent } from './components/left-side-menu/left-side-menu.component';
@@ -27,7 +30,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    AdministrationRoutingModule
+    AdministrationRoutingModule,
+    DataTablesModule
   ],
   declarations: [
     AdministrationComponent,

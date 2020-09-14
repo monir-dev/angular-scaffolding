@@ -6,6 +6,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { DataTablesModule } from 'angular-datatables';
+
 import { AdministrationModule } from './administration/administration.module';
 
 @NgModule({
@@ -18,7 +20,8 @@ import { AdministrationModule } from './administration/administration.module';
     HttpClientModule,
     AdministrationModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DataTablesModule
   ],
   providers: [
   ],

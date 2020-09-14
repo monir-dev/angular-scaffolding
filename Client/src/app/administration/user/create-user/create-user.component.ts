@@ -67,6 +67,7 @@ export class CreateUserComponent implements OnInit {
     user.Email = formData.Email;
     user.Password = formData.Password;
     user.UserName = formData.Email;
+    user.PhoneNumber = formData.PhoneNumber;
   
     this.loading = true;
     this.userService.createUser(user)

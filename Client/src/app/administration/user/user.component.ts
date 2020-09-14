@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { first } from 'rxjs/operators';
+import { DataTableDirective } from 'angular-datatables';
 declare var $:any;
 
 import { employees } from "./employees";
 import { Router } from '@angular/router';
 import {User} from "../../common/models/user.model";
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -13,73 +15,67 @@ import {User} from "../../common/models/user.model";
   styleUrls: ['./user.component.scss']
 })
 
-export class UserComponent implements OnInit {
-
-  public users: Array<User> = [];
-  public table: any;
+export class UserComponent implements OnInit, OnDestroy {
+  @ViewChild(DataTableDirective, {static: false})
+  dtElement: DataTableDirective;
+  dtOptions: DataTables.Settings = {};
+  users: User[] = [];
+  // We use this trigger because fetching the list of persons can be quite long,
+  // thus we ensure the data is fetched before rendering
+  dtTrigger: Subject<any> = new Subject();
 
   constructor(private router: Router, private userService: UserService) { 
+    
+  }
+
+  ngOnInit() {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 20,
+      serverSide: false,
+      processing: false
+    };
     this.userService.getUsers()
     .pipe(first())
     .subscribe(
         data => {
           this.users = data;
+
+          // Calling the DT trigger to manually render the table
+          this.dtTrigger.next();
         },
         error => {
           console.log(error);
         });
-  }
-
-  ngOnInit() {
-    this.table = $("#dataTable").DataTable({
-        ordering:  false,
-        dom: "Bfrtip",
-        buttons: [{
-            extend: "copy",
-            className: "btn-sm"
-        }, {
-            extend: "csv",
-            className: "btn-sm"
-        }, {
-            extend: "excel",
-            className: "btn-sm"
-        }, {
-            extend: "pdf",
-            className: "btn-sm"
-        }, {
-            extend: "print",
-            className: "btn-sm"
-        }],
-        responsive: !0
-        });
+    //$("#dataTable").DataTable({
+    //     ordering:  false,
+    //     dom: "Bfrtip",
+    //     buttons: [{
+    //         extend: "copy",
+    //         className: "btn-sm"
+    //     }, {
+    //         extend: "csv",
+    //         className: "btn-sm"
+    //     }, {
+    //         extend: "excel",
+    //         className: "btn-sm"
+    //     }, {
+    //         extend: "pdf",
+    //         className: "btn-sm"
+    //     }, {
+    //         extend: "print",
+    //         className: "btn-sm"
+    //     }],
+    //     responsive: !0
+    //     });
   }
 
   
 
   ngAfterViewInit(): void {
-
-    var searchField = document.getElementById("dataTable_filter").children[0].children[0];
-    searchField.addEventListener('keypress', logKey);
-
-    function logKey(e) {
-      console.log(e);      
-    }
-    
-
     //https://l-lin.github.io/angular-datatables/#/extensions/responsive
-    
-    $('#dataTable_filter input').on('keypress', function(e) {
-        e.preventDefault();
-        var value = "";
-        if(e.key != "Enter"){
-          value = e.target.value + e.key;
-          e.target.value = value; 
-        }
-        
-        //filterUsers(value);
-        
-    });
 
+    
   }
 
   filterUsers(value) {
@@ -99,6 +95,10 @@ export class UserComponent implements OnInit {
       data => {
         // remove that user for user list
         this.users = this.users.filter((user: User) => user.Id != id);
+
+        // rerender datatable
+        this.rerender();
+        
     },
     error => {
         //this.alertService.error(error);
@@ -106,6 +106,20 @@ export class UserComponent implements OnInit {
     });
 
     
+  }
+
+  rerender(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
+  }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
   }
 
 }
