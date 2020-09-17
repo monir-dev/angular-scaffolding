@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { first } from 'rxjs/operators';
+import { SweetAlertService } from 'src/app/common/services/sweet-alert.service';
+import { IconSuccess } from 'src/app/common/models/constantVariables';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +14,7 @@ import { first } from 'rxjs/operators';
 })
 export class LoginComponent implements OnInit {
   
-  constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService) {  }
+  constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService, private sweetAlert: SweetAlertService) {  }
 
   loginForm: FormGroup;
   loading = false;
@@ -58,6 +60,10 @@ export class LoginComponent implements OnInit {
         .pipe(first())
         .subscribe(
             data => {
+                this.sweetAlert.toastAlert({
+                  icon: IconSuccess,
+                  title: "Sign in successfully"
+                });
                 this.router.navigate([this.returnUrl]);
             },
             error => {

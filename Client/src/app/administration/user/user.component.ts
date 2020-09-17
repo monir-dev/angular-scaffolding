@@ -4,10 +4,12 @@ import { first } from 'rxjs/operators';
 import { DataTableDirective } from 'angular-datatables';
 declare var $:any;
 
-import { employees } from "./employees";
 import { Router } from '@angular/router';
 import {User} from "../../common/models/user.model";
 import { Subject } from 'rxjs';
+import { SweetAlertService } from 'src/app/common/services/sweet-alert.service';
+import { IconError } from 'src/app/common/models/constantVariables';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-user',
@@ -24,13 +26,13 @@ export class UserComponent implements OnInit, OnDestroy {
   // thus we ensure the data is fetched before rendering
   dtTrigger: Subject<any> = new Subject();
 
-  constructor(private router: Router, private userService: UserService) { 
+  constructor(private router: Router, private userService: UserService, private sweetAlert: SweetAlertService) { 
     
   }
 
   ngOnInit() {
     this.dtOptions = {
-      pagingType: 'full_numbers',
+      // pagingType: 'full_numbers',
       pageLength: 20,
       serverSide: false,
       processing: false
@@ -46,28 +48,15 @@ export class UserComponent implements OnInit, OnDestroy {
         },
         error => {
           console.log(error);
+
+          if(!error.ok) {
+            this.sweetAlert.toastAlert({
+              icon: IconError,
+              title: "Can't connect to server."
+            });
+          }
+
         });
-    //$("#dataTable").DataTable({
-    //     ordering:  false,
-    //     dom: "Bfrtip",
-    //     buttons: [{
-    //         extend: "copy",
-    //         className: "btn-sm"
-    //     }, {
-    //         extend: "csv",
-    //         className: "btn-sm"
-    //     }, {
-    //         extend: "excel",
-    //         className: "btn-sm"
-    //     }, {
-    //         extend: "pdf",
-    //         className: "btn-sm"
-    //     }, {
-    //         extend: "print",
-    //         className: "btn-sm"
-    //     }],
-    //     responsive: !0
-    //     });
   }
 
   
@@ -78,34 +67,71 @@ export class UserComponent implements OnInit, OnDestroy {
     
   }
 
-  filterUsers(value) {
-    console.log(this.users);
-    // this.users = this.users.filter((user: User) => user.Email.includes(value) || user.PhoneNumber.includes(value));
-  }
-
-
   loadCreateUserPage() {
     this.router.navigate(['/admin/users/create']);
   }
 
 
   onDeleteUser(id) {
-    this.userService.deleteUser(id).pipe(first())
-    .subscribe(
-      data => {
-        // remove that user for user list
-        this.users = this.users.filter((user: User) => user.Id != id);
 
-        // rerender datatable
-        this.rerender();
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false
+    });
+    
+    swalWithBootstrapButtons.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        this.userService.deleteUser(id).pipe(first())
+          .subscribe(
+            data => {
+              // remove that user for user list
+              this.users = this.users.filter((user: User) => user.Id != id);
+
+              // Show Delete confirmation message
+              swalWithBootstrapButtons.fire(
+                'Deleted!',
+                'User has been deleted successfully.',
+                'success'
+              );
+
+              // rerender datatable
+              this.rerender();
+              
+          },
+          error => {
+              //this.alertService.error(error);
+              swalWithBootstrapButtons.fire(
+                'Failed',
+                'Getting error while try to delete the user!',
+                'error'
+              );
+
+              console.log(error.status, error);
+          });
         
-    },
-    error => {
-        //this.alertService.error(error);
-        console.log(error.status, error);
+      } else if (
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire(
+          'Cancelled',
+          'this user is safe :)',
+          'error'
+        );
+      }
     });
 
-    
   }
 
   rerender(): void {

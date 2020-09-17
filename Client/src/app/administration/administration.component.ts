@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { SweetAlertService } from "../common/services/sweet-alert.service";
+
 @Component({
   selector: 'app-administration',
   templateUrl: './administration.component.html',
@@ -10,9 +12,11 @@ import { Component, OnInit } from '@angular/core';
 
 export class AdministrationComponent implements OnInit {
 
-  constructor() { }
+  constructor(private sweetAlert: SweetAlertService) { }
 
   ngOnInit() {
+    // this.sweetAlert.sweet();
+    //this.sweetAlert.toastAlert();
   }
 
 }

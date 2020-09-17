@@ -4,6 +4,8 @@ import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/fo
 import { User } from 'src/app/common/models/user.model';
 import { UserService } from '../../services/user.service';
 import { first } from 'rxjs/internal/operators/first';
+import { AlertConfig, SweetAlertService } from 'src/app/common/services/sweet-alert.service';
+import { AlertPositionBottomEnd, AlertPositionTopEnd, IconError, IconSuccess } from 'src/app/common/models/constantVariables';
 
 @Component({
   selector: 'app-create-user',
@@ -12,7 +14,12 @@ import { first } from 'rxjs/internal/operators/first';
 })
 export class CreateUserComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute,private router: Router, private userService: UserService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router, 
+    private userService: UserService,
+    private sweetAlert: SweetAlertService
+  ) { }
 
   userForm: FormGroup;
   loading = false;
@@ -60,9 +67,6 @@ export class CreateUserComponent implements OnInit {
     // reset backendModelStateErrors
     this.backendModelStateErrors = [];
 
-    // reset alerts on submit
-    //this.alertService.clear();
-
     var user = new User();
     user.Email = formData.Email;
     user.Password = formData.Password;
@@ -74,13 +78,20 @@ export class CreateUserComponent implements OnInit {
     .pipe(first())
     .subscribe(
       data => {
-        //console.log(data);
-        
-        //this.alertService.success('Registration successful', true);
+        this.sweetAlert.alert({
+          position: AlertPositionTopEnd,
+          icon: IconSuccess,
+          title: "New user created successfully"
+        });
         this.router.navigate(['/admin/users']);
     },
     error => {
-        //this.alertService.error(error);
+        this.sweetAlert.alert({
+          position: AlertPositionTopEnd,
+          icon: IconError,
+          title: error.error.ModelState[""]
+        });
+
         this.loading = false;
         this.backendModelStateErrors = error.error.ModelState[""];
 

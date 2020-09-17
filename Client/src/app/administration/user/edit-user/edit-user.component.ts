@@ -4,6 +4,8 @@ import { AbstractControl, FormGroup, FormControl, Validators } from '@angular/fo
 import { UserService } from '../../services/user.service';
 import { User } from 'src/app/common/models/user.model';
 import { first } from 'rxjs/internal/operators/first';
+import { AlertPositionTopEnd, IconError, IconSuccess } from 'src/app/common/models/constantVariables';
+import { SweetAlertService } from 'src/app/common/services/sweet-alert.service';
 
 @Component({
   selector: 'app-edit-user',
@@ -12,7 +14,7 @@ import { first } from 'rxjs/internal/operators/first';
 })
 export class EditUserComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute,private router: Router, private userService: UserService) { }
+  constructor(private route: ActivatedRoute,private router: Router, private userService: UserService, private sweetAlert: SweetAlertService) { }
 
   userForm: FormGroup;
   loading = false;
@@ -111,13 +113,21 @@ export class EditUserComponent implements OnInit {
     .pipe(first())
     .subscribe(
       data => {
-        //console.log(data);
+        this.sweetAlert.alert({
+          position: AlertPositionTopEnd,
+          icon: IconSuccess,
+          title: "User informations update successfully"
+        });
         
-        //this.alertService.success('Registration successful', true);
         this.router.navigate(['/admin/users']);
     },
     error => {
-        //this.alertService.error(error);
+        this.sweetAlert.alert({
+          position: AlertPositionTopEnd,
+          icon: IconError,
+          title: error.error.Message
+        });
+
         this.loading = false;
         this.backendModelStateErrors.push(error.error.Message);
 

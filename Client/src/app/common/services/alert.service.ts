@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Injectable({ providedIn: 'root' })
 export class AlertService {
@@ -39,5 +40,15 @@ export class AlertService {
     clear() {
         // clear by calling subject.next() without parameters
         this.subject.next();
+    }
+
+    sweet() {
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: false,
+            timer: 1500
+          });
     }
 }
