@@ -1,32 +1,32 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { UserService } from './user.service';
+import { RoleService } from './role.service';
 import { first } from 'rxjs/operators';
 import { DataTableDirective } from 'angular-datatables';
 declare var $:any;
 
 import { Router } from '@angular/router';
-import {User} from "./user.model";
+import {Role} from "./role.model";
 import { Subject } from 'rxjs';
 import { SweetAlertService } from 'src/app/common/services/sweet-alert.service';
 import { IconError } from 'src/app/common/models/constantVariables';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  selector: 'app-role',
+  templateUrl: './role.component.html',
+  styleUrls: ['./role.component.scss']
 })
 
-export class UserComponent implements OnInit, OnDestroy {
+export class RoleComponent implements OnInit, OnDestroy {
   @ViewChild(DataTableDirective, {static: false})
   dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
-  users: User[] = [];
+  roles: Role[] = [];
   // We use this trigger because fetching the list of persons can be quite long,
   // thus we ensure the data is fetched before rendering
   dtTrigger: Subject<any> = new Subject();
 
-  constructor(private router: Router, private userService: UserService, private sweetAlert: SweetAlertService) { 
+  constructor(private router: Router, private roleService: RoleService, private sweetAlert: SweetAlertService) { 
     
   }
 
@@ -37,11 +37,11 @@ export class UserComponent implements OnInit, OnDestroy {
       serverSide: false,
       processing: false
     };
-    this.userService.getUsers()
+    this.roleService.getRoles()
     .pipe(first())
     .subscribe(
         data => {
-          this.users = data;
+          this.roles = data;
 
           // Calling the DT trigger to manually render the table
           this.dtTrigger.next();
@@ -67,12 +67,12 @@ export class UserComponent implements OnInit, OnDestroy {
     
   }
 
-  loadCreateUserPage() {
-    this.router.navigate(['/admin/users/create']);
+  loadCreateRolePage() {
+    this.router.navigate(['/admin/roles/create']);
   }
 
 
-  onDeleteUser(id) {
+  onDeleteRole(id) {
 
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -93,16 +93,16 @@ export class UserComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.userService.deleteUser(id).pipe(first())
+        this.roleService.deleteRole(id).pipe(first())
           .subscribe(
             data => {
               // remove that user for user list
-              this.users = this.users.filter((user: User) => user.Id != id);
+              this.roles = this.roles.filter((role: Role) => role.Id != id);
 
               // Show Delete confirmation message
               swalWithBootstrapButtons.fire(
                 'Deleted!',
-                'User has been deleted successfully.',
+                'Role has been deleted successfully.',
                 'success'
               );
 
@@ -114,7 +114,7 @@ export class UserComponent implements OnInit, OnDestroy {
               //this.alertService.error(error);
               swalWithBootstrapButtons.fire(
                 'Failed',
-                'Getting error while try to delete the user!',
+                'Getting error while try to delete the role!',
                 'error'
               );
 
@@ -126,7 +126,7 @@ export class UserComponent implements OnInit, OnDestroy {
       ) {
         swalWithBootstrapButtons.fire(
           'Cancelled',
-          'this user is safe :)',
+          'this role is safe :)',
           'error'
         );
       }

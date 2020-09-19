@@ -8,7 +8,9 @@ import { UserComponent } from './user/user.component';
 import { CreateUserComponent } from './user/create-user/create-user.component';
 import { EditUserComponent } from './user/edit-user/edit-user.component';
 import { AuthGuard } from '../common/helpers/auth.guard';
-
+import { RoleComponent } from './role/role.component';
+import { CreateRoleComponent } from './role/create-role/create-role.component';
+import { EditRoleComponent } from './role/edit-role/edit-role.component';
 
 const routes: Routes = [
   { path: '', component: AdministrationComponent
@@ -20,6 +22,10 @@ const routes: Routes = [
       { path: 'admin/users/create', component: CreateUserComponent, pathMatch: 'full', canActivate: [AuthGuard] },
       { path: 'admin/users/:id/edit', component: EditUserComponent, pathMatch: 'full', canActivate: [AuthGuard] },
       { path: 'admin/users', component: UserComponent, pathMatch: 'full', canActivate: [AuthGuard] },
+
+      { path: 'admin/roles/create', component: CreateRoleComponent, pathMatch: 'full', canActivate: [AuthGuard] },
+      { path: 'admin/roles/:id/edit', component: EditRoleComponent, pathMatch: 'full', canActivate: [AuthGuard] },
+      { path: 'admin/roles', component: RoleComponent, pathMatch: 'full', canActivate: [AuthGuard] },
       
     ]
   },

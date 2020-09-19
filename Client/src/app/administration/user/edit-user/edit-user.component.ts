@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AbstractControl, FormGroup, FormControl, Validators } from '@angular/forms';
-import { UserService } from '../../services/user.service';
-import { User } from 'src/app/common/models/user.model';
+import { UserService } from '../user.service';
+import { User } from '../user.model';
 import { first } from 'rxjs/internal/operators/first';
 import { AlertPositionTopEnd, IconError, IconSuccess } from 'src/app/common/models/constantVariables';
 import { SweetAlertService } from 'src/app/common/services/sweet-alert.service';

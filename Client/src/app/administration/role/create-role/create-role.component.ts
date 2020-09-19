@@ -1,27 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { User } from '../user.model';
-import { UserService } from '../user.service';
+import { Role } from '../role.model';
+import { RoleService } from '../role.service';
 import { first } from 'rxjs/internal/operators/first';
 import { AlertConfig, SweetAlertService } from 'src/app/common/services/sweet-alert.service';
 import { AlertPositionBottomEnd, AlertPositionTopEnd, IconError, IconSuccess } from 'src/app/common/models/constantVariables';
 
 @Component({
-  selector: 'app-create-user',
-  templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.scss']
+  selector: 'app-create-role',
+  templateUrl: './create-role.component.html',
+  styleUrls: ['./create-role.component.scss']
 })
-export class CreateUserComponent implements OnInit {
+export class CreateRoleComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
     private router: Router, 
-    private userService: UserService,
+    private RoleService: RoleService,
     private sweetAlert: SweetAlertService
   ) { }
 
-  userForm: FormGroup;
+  roleForm: FormGroup;
   loading = false;
   submitted = false;
   returnUrl: string;
@@ -29,61 +29,41 @@ export class CreateUserComponent implements OnInit {
   backendModelStateErrors: Array<any> = [];
 
   // convenience getter for easy access to form fields
-  get f() { return this.userForm.controls; }
-
-  passwordConfirming(c: AbstractControl): { invalid: boolean } {    
-    if (c.get('Password').value !== c.get('ConfirmPassword').value) {
-        return {invalid: true};
-    }
-  }
+  get f() { return this.roleForm.controls; }
   
   ngOnInit() {
-    this.userForm = new FormGroup({
-      Email: new FormControl('', [
-        Validators.required,
-        Validators.email
-      ]),
-      Password: new FormControl('',[
-        Validators.required,
-        Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{5,}')
-      ]),
-      ConfirmPassword: new FormControl('',[
+    this.roleForm = new FormGroup({
+      Name: new FormControl('', [
         Validators.required
-      ]),
-      PhoneNumber: new FormControl('', [
-        Validators.maxLength(11)
       ])
-    }, this.passwordConfirming);
+    });
   }
 
   onSubmit(){
     // stop here if form is invalid
-    if (this.userForm.invalid) {
+    if (this.roleForm.invalid) {
         return;
     }
 
-    var formData = this.userForm.value;
+    var formData = this.roleForm.value;
 
     // reset backendModelStateErrors
     this.backendModelStateErrors = [];
 
-    var user = new User();
-    user.Email = formData.Email;
-    user.Password = formData.Password;
-    user.UserName = formData.Email;
-    user.PhoneNumber = formData.PhoneNumber;
+    var role = new Role();
+    role.Name = formData.Name;
   
     this.loading = true;
-    this.userService.createUser(user)
+    this.RoleService.createRole(role)
     .pipe(first())
     .subscribe(
       data => {
         this.sweetAlert.alert({
           position: AlertPositionTopEnd,
           icon: IconSuccess,
-          title: "New user created successfully"
+          title: "New Role created successfully"
         });
-        this.router.navigate(['/admin/users']);
+        this.router.navigate(['/admin/roles']);
     },
     error => {
         this.sweetAlert.alert({
@@ -100,8 +80,8 @@ export class CreateUserComponent implements OnInit {
     
   }
 
-  navigateToUsersPage(){
-    this.router.navigate(['/admin/users']);
+  navigateToRolesPage(){
+    this.router.navigate(['/admin/roles']);
   }
 
 }

@@ -3,14 +3,16 @@ import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, retry, map } from 'rxjs/operators';
 
-import { RegistrationModel } from "../models/registration.model";
-import { AuthUser } from '../../common/models/user.model';
+import { RegistrationModel } from "./registration/registration.model";
+import { AuthUser } from './auth-user.model';
 
 @Injectable()
 export class AuthService {
     
     private currentUserSubject: BehaviorSubject<AuthUser>;
     public currentUser: Observable<AuthUser>;
+
+    baseUrl: string = "https://localhost:44355";
 
     constructor(private http: HttpClient) { 
         this.currentUserSubject = new BehaviorSubject<AuthUser>(JSON.parse(localStorage.getItem('currentUser')));
@@ -22,11 +24,9 @@ export class AuthService {
     }
 
     //https://angular.io/guide/http
-    url: string = "https://localhost:44355/api/Account/Register";
-
 
     register(registrationModel: RegistrationModel) {
-        return this.http.post<RegistrationModel>(this.url, registrationModel);
+        return this.http.post<RegistrationModel>(`${this.baseUrl}/api/Account/Register`, registrationModel);
     }
 
     login(username, password) {
@@ -36,7 +36,7 @@ export class AuthService {
             .set('username', username)
             .set('password', password);
 
-        return this.http.post<any>(`https://localhost:44355/token`, payload)
+        return this.http.post<any>(`${this.baseUrl}/token`, payload)
             .pipe(map(user => {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('currentUser', JSON.stringify(user));

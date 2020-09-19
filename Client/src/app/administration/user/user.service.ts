@@ -1,13 +1,16 @@
 import {Injectable} from "@angular/core";
-import {User} from "../../common/models/user.model";
+import {User} from "./user.model";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth.service';
 
 
 @Injectable()
 export class UserService {
 //   constructor(private http: Http) {}
   constructor(private http: HttpClient, private authService: AuthService) {}
+
+  baseUrl: string = 'https://localhost:44355';
+
 
   getUsers() {
     const currentUser = this.authService.currentUserValue;
@@ -20,7 +23,7 @@ export class UserService {
       })
     };
 
-    return this.http.get<User[]>(`https://localhost:44355/api/user`, httpOptions);
+    return this.http.get<User[]>(`${this.baseUrl}/api/user`, httpOptions);
 
     // return this.http.get('/api/user')
     //   .map((res: Response) => res.json().response);
@@ -38,7 +41,7 @@ export class UserService {
       })
     };
 
-    return this.http.get<User>(`https://localhost:44355/api/user/${Id}`, httpOptions);
+    return this.http.get<User>(`${this.baseUrl}/api/user/${Id}`, httpOptions);
   }
 
   createUser(user: User) {
@@ -52,7 +55,7 @@ export class UserService {
       })
     };
 
-    return this.http.post<User>(`https://localhost:44355/api/user`, user, httpOptions);
+    return this.http.post<User>(`${this.baseUrl}/api/user`, user, httpOptions);
   }
 
 
@@ -67,7 +70,7 @@ export class UserService {
       })
     };
 
-    return this.http.put<User>(`https://localhost:44355/api/user/${user.Id}`, user, httpOptions);
+    return this.http.put<User>(`${this.baseUrl}/api/user/${user.Id}`, user, httpOptions);
   }
 
 
@@ -82,6 +85,6 @@ export class UserService {
       })
     };
 
-    return this.http.delete<any>(`https://localhost:44355/api/user/${id}`, httpOptions);
+    return this.http.delete<any>(`${this.baseUrl}/api/user/${id}`, httpOptions);
   }
 }

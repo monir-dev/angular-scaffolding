@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';  
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../auth.service';
 import { first } from 'rxjs/operators';
 import { SweetAlertService } from 'src/app/common/services/sweet-alert.service';
 import { IconSuccess } from 'src/app/common/models/constantVariables';

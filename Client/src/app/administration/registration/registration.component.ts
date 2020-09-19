@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 
 
-import { RegistrationModel } from '../models/registration.model';
-import { AuthService } from '../services/auth.service';
+import { RegistrationModel } from './registration.model';
+import { AuthService } from '../auth.service';
 import { first } from 'rxjs/operators';
 
 @Component({

@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card-box">
+        <h4 class="m-t-0 m-b-30 header-title">
+          <a href="javascript:void(0);" [routerLink]="['/admin/roles']" class="btn btn-default btn-sm m-l-5">
+            <i class=" ti-arrow-left"></i>
+          </a>
+          <b class="m-l-5">Edit Role</b>
+        </h4>
+        
+        <div>
+          <li *ngFor="let error of backendModelStateErrors" style="color:brown">{{ error }}</li>
+        </div>
+        
+        <form class="form-horizontal group-border-dashed" [formGroup]="roleForm"  (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-lg-6">
+                            
+              <input type="hidden" formControlName="Id">
+
+              <div class="form-group" [ngClass]="{
+                'has-error': f.Name.invalid && f.Name.dirty,
+                'has-success': f.Name.valid && f.Name.dirty
+              }">
+                <label class="col-sm-3 control-label">Role Name<span style="color:crimson"> *</span></label>
+                <div class="col-sm-8">
+                  <input type="text" formControlName="Name" class="form-control" required placeholder="Enter a role name"/>
+                  <span 
+                    class="text-danger" 
+                    *ngIf="f.Name.dirty 
+                        && f.Name.errors 
+                        && f.Name.errors.required">Role name is required </span>
+                </div>
+              </div>
+
+            </div>
+            
+            <div class="col-lg-6">      
+
+            </div>
+
+          </div>
+  
+          <div class="row">
+            <div class="form-group" style="float: right; margin-right: 6em;">
+              <div class="m-t-15" >
+                <button type="submit" class="btn btn-primary m-l-5">
+                  UPDATE
+                </button>
+                <button type="button" class="btn btn-default m-l-5"  (click)="loadDefaultFormValues()">
+                  RESET
+                </button>
+              </div>
+            </div>
+          </div>      
+        </form>
+        
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
